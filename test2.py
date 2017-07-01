@@ -4,9 +4,9 @@ import obd
 import time
 
 connection = obd.OBD()
-cmd = obd.commands.SPEED
+cmd = obd.commands.RPM
 
 while True:
 	response = connection.query(cmd) # send command and parse response
-	print(response.value.to("mph"))
-	time.sleep(0.5)
+	print(response.value)
+	time.sleep(1)
