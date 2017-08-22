@@ -18,9 +18,13 @@ def sweep_leds (led_pins, delay): # Turns on led_pins in sequence, leaving them 
 delay = 0.2
 GPIO.setmode(GPIO.BCM)
 led_pins = [0, 5, 6, 13, 19, 26, 12, 16]
+for pin in led_pins:
+	GPIO.setup(pin, GPIO.OUT)
 sweep_leds(led_pins, delay)
 toggle_leds(led_pins, GPIO.LOW)
 time.sleep(delay)
 toggle_leds(led_pins, GPIO.HIGH)
 time.sleep(2 * delay)
 toggle_leds(led_pins, GPIO.LOW)
+
+GPIO.cleanup() # remove eventually
