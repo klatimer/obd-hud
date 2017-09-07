@@ -1,8 +1,7 @@
 # Kenneth Latimer
 # 8/29/17
 # Description:
-# 	Class containing information about LEDs and behavior for displaying information 
-# 	to the user.
+# 	Class describing the RPM readout to the driver
 
 import RPi.GPIO as GPIO
 import time
@@ -19,11 +18,10 @@ class LED_Tachometer:
 			GPIO.setup(pin, GPIO.OUT)
 
 	def display_rpm(self, current_rpm):
-		led_pins = self.led_pins
 		num_leds_on = int(round(current_rpm))
 		# Turn on the proper number of LEDs
 		for i in range(num_leds_on):
-			GPIO.output(led_pins(i), GPIO.HIGH)
+			GPIO.output(self.led_pins(i), GPIO.HIGH)
 
 	def clear_rpm(self):
 		for pin in self.led_pins:
