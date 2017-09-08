@@ -4,7 +4,7 @@
 # 	Class describing the RPM readout to the driver
 
 import RPi.GPIO as GPIO
-import time
+import math
 
 class tachometer:
 	def __init__(self, led_pins, redline):
@@ -18,8 +18,9 @@ class tachometer:
 			GPIO.setup(pin, GPIO.OUT)
 
 	def display_rpm(self, current_rpm):
+		self.clear_rpm()
 		led_pins = self.led_pins
-		num_leds_on = int(round(current_rpm / 1000.0))
+		num_leds_on = current_rpm / 1000 
 		# Turn on the proper number of LEDs
 		for i in range(num_leds_on):
 			GPIO.output(led_pins[i], GPIO.HIGH)
