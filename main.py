@@ -8,7 +8,7 @@ import Adafruit_CharLCD as LCD
 import obd
 import time
 import threading
-import led_tachometer
+from led_tachometer import tachometer
 
 global connection
 global rpm
@@ -69,8 +69,8 @@ if __name__ == "__main__":
 	connection.watch(obd.commands.RPM, callback=new_rpm)
 	connection.start()
 	# Create threads
-	led_thread = led_thread()
-	lcd_thread = lcd_thread()
+	thread_1 = led_thread()
+	thread_2 = lcd_thread()
 	# Start threads
-	led_thread.start()
-	lcd_thread.start()
+	thread_1.start()
+	thread_2.start()
