@@ -4,7 +4,7 @@
 # 	main file for controlling the tachometer and character LCD.
 
 import RPi.GPIO as GPIO
-import Adafruit_Python_CharLCD as LCD
+import Adafruit_CharLCD as LCD
 import obd
 import time
 import threading

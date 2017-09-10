@@ -7,11 +7,7 @@ import RPi.GPIO as GPIO
 import math
 
 class tachometer:
-<<<<<<< HEAD
-	def __init__(self, led_pins):
-=======
 	def __init__(self, led_pins, redline):
->>>>>>> 36fb67ec29d3d4b202b374bb4d2fd68d3f2b2645
 		self.led_pins = led_pins
 		self.num_leds = len(led_pins)
 		self.current_rpm = 0
@@ -27,11 +23,7 @@ class tachometer:
 		num_leds_on = current_rpm / 1000 
 		# Turn on the proper number of LEDs
 		for i in range(num_leds_on):
-<<<<<<< HEAD
-			GPIO.output(self.led_pins[i], GPIO.HIGH)
-=======
 			GPIO.output(led_pins[i], GPIO.HIGH)
->>>>>>> 36fb67ec29d3d4b202b374bb4d2fd68d3f2b2645
 
 	def clear_rpm(self):
 		for pin in self.led_pins:
