@@ -8,6 +8,7 @@ import Adafruit_CharLCD as LCD
 import obd
 import time
 import threading
+
 from led_tachometer import tachometer
 
 global connection
@@ -15,26 +16,18 @@ global rpm
 
 class led_thread(threading.Thread):
 	def __init__(self):
-		led_1 = 9
-		led_2 = 11
-		led_3 = 26
-		led_4 = 19
-		led_5 = 13
-		led_6 = 6
-		led_7 = 5
-		led_8 = 0
-		tach = tachometer([led_1, led_2, led_3, led_4, led_5, led_6, led_7, led_8])
+		tach = tachometer()
 		threading.Thread.__init__(self)
 		self._running = True
 	def run(self):
 		global rpm
-		try:
-			while True:
+		while True:
+			try:
 				tach.display_rpm(rpm)
 				time.sleep(0.1)
-		except RuntimeError:
-			tach.display_rpm(8000) # Turn on all leds
-			pass
+			except RuntimeError:
+				tach.display_rpm(8000) # Turn on all leds
+				pass
 
 class lcd_thread(threading.Thread):
 	def __init__(self):
@@ -54,23 +47,28 @@ class lcd_thread(threading.Thread):
 		self._running = True
 	def run(self):
 		global rpm
-		try:
-			while True:
-				lcd.message('%s %s' % ('RPM:\n', rpm))
+		global connection
+		while True:
+			try:
+				if connection.status == OBDStatus.CAR_CONNECTED:
+					lcd.message('%s %s' % ('RPM:\n', rpm))
+				else:
+					lcd.message('Connecting...')
 				time.sleep(0.25)
-		except RuntimeError:
-			lcd.message('Error')
-			pass
+			except RuntimeError:
+				lcd.message('Error')
+				pass
 
 if __name__ == "__main__":
 	connection = obd.Async()
+	thread_2 = lcd_thread()
+	thread_2.start()
+	while connection.status == OBDStatus.NOT_CONNECTED:
+		time.sleep(0.1)
 	def new_rpm(r):
-		rpm = r.value # Write to global variable that both threads can access
+		rpm = r.value
 	connection.watch(obd.commands.RPM, callback=new_rpm)
 	connection.start()
-	# Create threads
 	thread_1 = led_thread()
-	thread_2 = lcd_thread()
-	# Start threads
 	thread_1.start()
-	thread_2.start()
+	
