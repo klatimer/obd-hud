@@ -21,6 +21,10 @@ class tachometer():
 		self.clear_rpm()
 		led_pins = self.led_pins
 		num_leds_on = current_rpm / 1000 
+		if num_leds_on > num_leds:
+			num_leds_on = num_leds
+		if num_leds_on < 0:
+			num_leds_on = 0
 		# Turn on the proper number of LEDs
 		for i in range(num_leds_on):
 			GPIO.output(led_pins[i], GPIO.HIGH)
