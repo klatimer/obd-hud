@@ -23,7 +23,8 @@ class led_thread(threading.Thread):
 		global rpm
 		while True:
 			try:
-				self.tach.display_rpm(connection.query(obd.commands.RPM))
+				r = connection.query(obd.commands.RPM)
+				self.tach.display_rpm(int(r.value.magnitude))
 				time.sleep(0.1)
 			except RuntimeError:
 				self.tach.display_rpm(8000) # Turn on all leds
