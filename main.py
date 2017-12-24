@@ -23,7 +23,7 @@ class led_thread(threading.Thread):
 		global rpm
 		while True:
 			try:
-				self.tach.display_rpm(rpm)
+				self.tach.display_rpm(connection.query(obd.commands.RPM))
 				time.sleep(0.1)
 			except RuntimeError:
 				self.tach.display_rpm(8000) # Turn on all leds
@@ -60,16 +60,11 @@ class lcd_thread(threading.Thread):
 				pass
 
 if __name__ == "__main__":
-	connection = obd.Async()
+	connection = obd.OBD() # blocking connection with auto-connect
 	# thread_2 = lcd_thread()
 	# thread_2.start()
 	while connection.status == obd.OBDStatus.NOT_CONNECTED:
 		time.sleep(0.1)
-	def new_rpm(r):
-		rpm = r.value
-	rpm = -1
-	connection.watch(obd.commands.RPM, callback=new_rpm)
-	connection.start()
 	thread_1 = led_thread()
 	thread_1.start()
 	
