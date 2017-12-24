@@ -7,8 +7,8 @@ import RPi.GPIO as GPIO
 import math
 
 class tachometer():
-	def __init__(self, led_pins=[9 11 26 19 13 6 5 0]):
-		self.led_pins = led_pins
+	def __init__(self):
+		self.led_pins = [9 11 26 19 13 6 5 0]
 		self.num_leds = len(led_pins)
 		self.current_rpm = 0
 		self.max_rpm = int(1000 * self.num_leds) # Using 1 LED per 1k RPM (for now)

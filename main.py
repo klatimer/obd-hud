@@ -61,8 +61,8 @@ class lcd_thread(threading.Thread):
 
 if __name__ == "__main__":
 	connection = obd.Async()
-	thread_2 = lcd_thread()
-	thread_2.start()
+	# thread_2 = lcd_thread()
+	# thread_2.start()
 	while connection.status == OBDStatus.NOT_CONNECTED:
 		time.sleep(0.1)
 	def new_rpm(r):
