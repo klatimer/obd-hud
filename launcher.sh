@@ -7,5 +7,6 @@
 cd /
 cd ~/python/obd_hud
 sudo python led_init.py
-sudo python lcd_test.py
+sudo rfcomm bind rfcomm0 00:1D:A5:00:06:17 # put obdii adapter MAC address here
+sudo python main.py
 cd /

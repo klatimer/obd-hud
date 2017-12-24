@@ -23,7 +23,6 @@ class tachometer():
 		num_leds = self.num_leds
 		led_pins = self.led_pins
 		num_leds_on = current_rpm / 1000 
-		print(current_rpm) # debug
 		if num_leds_on > num_leds:
 			num_leds_on = num_leds
 		if num_leds_on < 0:
