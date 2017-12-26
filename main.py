@@ -6,6 +6,7 @@
 import RPi.GPIO as GPIO
 import Adafruit_CharLCD as LCD
 import obd
+import os
 import time
 import threading
 
@@ -21,10 +22,11 @@ class led_thread(threading.Thread):
 		self._running = True
 	def run(self):
 		global rpm
+		os.system("led_init.py")
 		while True:
 			try:
-				rpm = connection.query(obd.commands.RPM)
-				self.tach.display_rpm(int(rpm.value.magnitude))
+				self.tach.display_rpm(int(rpm.magnitude))
+				time.sleep(0.05)
 			except RuntimeError:
 				self.tach.display_rpm(8000) # Turn on all leds
 				pass
@@ -41,7 +43,7 @@ class lcd_thread(threading.Thread):
 		lcd_columns = 16
 		lcd_rows = 2
 		self.lcd = LCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7,
-			   lcd_columns, lcd_rows, lcd_backlight)
+			   							lcd_columns, lcd_rows, lcd_backlight)
 		self.lcd.set_backlight(1)
 		threading.Thread.__init__(self)
 		self._running = True
@@ -60,7 +62,12 @@ class lcd_thread(threading.Thread):
 				pass
 
 if __name__ == "__main__":
-	connection = obd.OBD() # auto connect
+	global rpm
+	connection = obd.Async() # asynchronous connection
+	def new_rpm(response):
+		rpm = r.value
+	connection.watch(obd.commands.RPM, callback=new_rpm)
+	connection.start()
 	thread_2 = lcd_thread()
 	thread_2.start()
 	while connection.status == obd.OBDStatus.NOT_CONNECTED:
