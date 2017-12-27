@@ -13,7 +13,6 @@ from led_tachometer import tachometer
 
 global connection
 global rpm
-rpm = 0
 
 class led_thread(threading.Thread):
 	def __init__(self):
@@ -25,10 +24,8 @@ class led_thread(threading.Thread):
 		while True:
 			try:
 				self.tach.display_rpm(int(rpm))
-				print(rpm)
 				time.sleep(0.05)
 			except RuntimeError:
-				self.tach.display_rpm(8000) # Turn on all leds
 				pass
 
 class lcd_thread(threading.Thread):
@@ -49,19 +46,15 @@ class lcd_thread(threading.Thread):
 		self._running = True
 	def run(self):
 		global rpm
-		global connection
 		while True:
 			try:
-				if connection.status == OBDStatus.CAR_CONNECTED:
-					self.lcd.message('%s %s' % ('RPM:\n', rpm))
-				else:
-					self.lcd.message('Connecting...')
+				self.lcd.message('%s %s' % ('RPM:\n', rpm))
 				time.sleep(0.25)
 			except RuntimeError:
-				self.lcd.message('Error')
 				pass
 
 if __name__ == "__main__":
+	rpm = 0
 	connection = obd.Async() # asynchronous connection
 	def new_rpm(response):
 		global rpm
