@@ -68,8 +68,8 @@ if __name__ == "__main__":
 		rpm = response.value
 	connection.watch(obd.commands.RPM, callback=new_rpm)
 	connection.start()
-	thread_2 = lcd_thread()
-	thread_2.start()
+	# thread_2 = lcd_thread()
+	# thread_2.start()
 	while connection.status == obd.OBDStatus.NOT_CONNECTED:
 		time.sleep(0.1)
 	thread_1 = led_thread()
