@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 # launcher.sh
 # navigate to home, then to this directory, then run a python script
 # make sure to edit /etc/rc.local as root and add the following:
