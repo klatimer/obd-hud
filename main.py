@@ -65,7 +65,7 @@ if __name__ == "__main__":
 	global rpm
 	connection = obd.Async() # asynchronous connection
 	def new_rpm(response):
-		rpm = r.value
+		rpm = response.value
 	connection.watch(obd.commands.RPM, callback=new_rpm)
 	connection.start()
 	thread_2 = lcd_thread()
